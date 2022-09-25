@@ -83,12 +83,16 @@ void MainController::update()
 
 	if (_currentScreen == ScreenType::SEARCH_CONTACT)
 	{
+		std::string contact = "There is no contacts with this name";
+		if (_contacts.contains(_name))
+		{
+			contact = _contacts[_name];
+		}
+
 		_screen.Draw(Text{ .str = "Search a contact", .x = _screen.GetWidth() / 2, .y = 2, .xCentered = true });
-		
 		_screen.Draw(Text{ .str = "Name:", .x = _screen.GetWidth() / 4, .y = 5 });
 		_screen.Draw(Field{ .text = _name, .x = _screen.GetWidth() / 4 + 6 + 3, .y = 5, .selected = true });
-		_screen.Draw(Text{ .str = _contacts.contains(_name) ? "Found a number: " + _contacts[_name] : "There is no contacts with this name", 
-			.x = _screen.GetWidth() / 2, .y = 7, .xCentered = true});
+		_screen.Draw(Text{ .str = contact, .x = _screen.GetWidth() / 2, .y = 7, .xCentered = true});
 
 		_screen.Draw(Text{ .str = "Back: Esc", .x = _screen.GetWidth() / 2, .y = _screen.GetHeight() - 3, .xCentered = true });
 	}
