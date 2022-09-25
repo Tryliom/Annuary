@@ -6,6 +6,8 @@
 #include <windows.h>
 
 bool constexpr BORDER = true;
+std::string const BORDER_COLUMN = "|";
+std::string const BORDER_ROW = "=";
 
 void Screen::setPos(const int x, const int y)
 {
@@ -20,6 +22,7 @@ Screen::Screen()
 	this->_height = 0;
 	this->_width = 0;
 	this->_screen = {};
+	this->_cache = {};
 }
 
 void Screen::Reset()
@@ -30,6 +33,7 @@ void Screen::Reset()
 	GetConsoleScreenBufferInfo(output, &csbi);
 	this->_height = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 	this->_width = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+	this->_cache = this->_screen;
 	this->_screen = {};
 
 	// Hide the cursor
@@ -46,9 +50,13 @@ void Screen::Reset()
 		{
 			if (BORDER)
 			{
-				if (w == 0 || w == _width - 1 || h == 0 || h == _height - 1)
+				if (h == 0 || h == _height - 1)
 				{
-					row.emplace_back("#");
+					row.emplace_back(BORDER_ROW);
+				}
+				else if (w == 0 || w == _width - 1)
+				{
+					row.emplace_back(BORDER_COLUMN);
 				}
 				else
 				{
@@ -70,10 +78,15 @@ void Screen::Render() const
 	// Display every lines of the screen
 	for (int h = 0; h < _height; h++)
 	{
-		this->setPos(0, h);
+		int w = 0;
 		for (const auto& c : this->_screen[h])
 		{
-			std::cout << c;
+			if (static_cast<int>(this->_cache.size()) != _height || static_cast<int>(this->_cache[h].size()) != _width || this->_cache[h][w] != c)
+			{
+				this->setPos(w, h);
+				std::cout << c;
+			}
+			w++;
 		}
 	}
 }
@@ -149,16 +162,16 @@ void Screen::Draw(const Button button)
 
 	for (int i = 0; i < static_cast<int>(button.text.length()) + 2; i++)
 	{
-		border += "#";
+		border += BORDER_ROW;
 	}
 
 	if (button.selected)
 	{
-		background = Background::BLUE;
-		foreground = Foreground::WHITE;
+		background = Background::CYAN;
+		foreground = Foreground::BLACK;
 	}
 
 	this->Draw(Text{ .str = border, .x = x, .y = y, .background = background, .foreground = foreground });
-	this->Draw(Text{ .str = "#" + button.text + "#", .x = x, .y = y + 1, .background = background, .foreground = foreground });
+	this->Draw(Text{ .str = BORDER_COLUMN + button.text + BORDER_COLUMN, .x = x, .y = y + 1, .background = background, .foreground = foreground });
 	this->Draw(Text{ .str = border, .x = x, .y = y + 2, .background = background, .foreground = foreground });
 }

@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 
-
 enum class Foreground
 {
 	NONE,
@@ -54,6 +53,7 @@ class Screen
 {
 private:
 	std::vector<std::vector<std::string>> _screen;
+	std::vector<std::vector<std::string>> _cache;
 	int _height;
 	int _width;
 
