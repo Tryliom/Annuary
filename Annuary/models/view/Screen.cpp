@@ -71,6 +71,10 @@ void Screen::Reset()
 
 		this->_screen.emplace_back(row);
 	}
+
+	// Reset cursor position
+	_cursorX = -1;
+	_cursorY = -1;
 }
 
 void Screen::Render() const
@@ -88,6 +92,17 @@ void Screen::Render() const
 			}
 			w++;
 		}
+	}
+
+	if (_cursorX != -1 && _cursorY != -1)
+	{
+		// Show the cursor
+		const HANDLE output = GetStdHandle(STD_OUTPUT_HANDLE);
+		CONSOLE_CURSOR_INFO cursorInfo;
+		GetConsoleCursorInfo(output, &cursorInfo);
+		cursorInfo.bVisible = true;
+		SetConsoleCursorInfo(output, &cursorInfo);
+		this->setPos(_cursorX, _cursorY);
 	}
 }
 
@@ -174,4 +189,18 @@ void Screen::Draw(const Button button)
 	this->Draw(Text{ .str = border, .x = x, .y = y, .background = background, .foreground = foreground });
 	this->Draw(Text{ .str = BORDER_COLUMN + button.text + BORDER_COLUMN, .x = x, .y = y + 1, .background = background, .foreground = foreground });
 	this->Draw(Text{ .str = border, .x = x, .y = y + 2, .background = background, .foreground = foreground });
+}
+
+void Screen::Draw(const Field& field)
+{
+	if (field.selected)
+	{
+		Draw(Text{ .str = field.text, .x = field.x, .y = field.y, .xCentered = field.xCentered, .background = Background::WHITE, .foreground = Foreground::BLACK });
+		_cursorX = field.x + field.text.length();
+		_cursorY = field.y;
+	}
+	else
+	{
+		Draw(Text{ .str = field.text, .x = field.x, .y = field.y, .xCentered = field.xCentered });
+	}
 }

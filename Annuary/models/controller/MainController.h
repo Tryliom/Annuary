@@ -8,21 +8,19 @@ enum class ScreenType
 {
 	MAIN,
 	CONTACTS,
-	CONTACT,
-	EDIT_CONTACT,
 	NEW_CONTACT,
-	SEARCH_CONTACT,
-	EXIT
+	SEARCH_CONTACT
 };
 
 class MainController final : public Controller
 {
 private:
 	std::map<std::string, std::string> _contacts;
-	std::string _currentContact;
 	ScreenType _currentScreen;
 	int _currentButton{-1};
 	int _maxButtons{0};
+	std::string _name;
+	std::string _number;
 
 	void updateScreenType(ScreenType screenType);
 	void update() override;

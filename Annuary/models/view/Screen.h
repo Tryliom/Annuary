@@ -49,6 +49,16 @@ struct Button
 	bool yCentered{ false };
 };
 
+struct Field
+{
+	std::string text{};
+	int x{ 0 };
+	int y{ 0 };
+	bool selected{ false };
+	bool xCentered{ false };
+	bool yCentered{ false };
+};
+
 class Screen
 {
 private:
@@ -56,20 +66,20 @@ private:
 	std::vector<std::vector<std::string>> _cache;
 	int _height;
 	int _width;
+	int _cursorX;
+	int _cursorY;
 
 	static void setPos(int x, int y);
 public:
 	Screen();
 
-	void Reset();
-
-	void Render() const;
-
-	void Draw(Text text);
-
-	void Draw(Button button);
-
 	int GetHeight() const { return this->_height; }
 	int GetWidth() const { return this->_width; }
+
+	void Reset();
+	void Render() const;
+	void Draw(Text text);
+	void Draw(Button button);
+	void Draw(const Field& field);
 };
 
