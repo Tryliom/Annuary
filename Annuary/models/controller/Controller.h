@@ -3,17 +3,10 @@
 
 class Controller
 {
-private:
+protected:
 	Screen _screen;
 	bool _canPressKey{ true };
-	/**
-	 * \brief Refresh screen rendering
-	 */
-	void refresh();
-	/**
-	 * \brief Start a thread to update the screen
-	 */
-	void startRenderingThread();
+
 	/**
 	 * \brief Used to draw things on the screen before rendering
 	 */
@@ -23,8 +16,16 @@ private:
 	 * \param key The key pressed
 	 */
 	virtual void onKeyPressed(char key) {}
+private:
+	/**
+	 * \brief Refresh screen rendering
+	 */
+	void refresh();
+	/**
+	 * \brief Start a thread to update the screen
+	 */
+	void startRenderingThread();
 public:
-	virtual ~Controller() = default;
 	/**
 	 * \brief Start the controller
 	 */

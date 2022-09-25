@@ -24,6 +24,7 @@ void Controller::startRenderingThread()
 
 void Controller::Start()
 {
+	startRenderingThread();
 	while (const char key = static_cast<char>(_getch())) 
 	{
 		if (_canPressKey) {

@@ -32,12 +32,22 @@ enum class Background
 
 struct Text
 {
-	std::string Str{};
-	int X{ 0 };
-	int Y{ 0 };
-	bool XCentered{ false };
-	Background Background{ Background::NONE };
-	Foreground Foreground{ Foreground::NONE };
+	std::string str{};
+	int x{ 0 };
+	int y{ 0 };
+	bool xCentered{ false };
+	Background background{ Background::NONE };
+	Foreground foreground{ Foreground::NONE };
+};
+
+struct Button
+{
+	std::string text{};
+	int x{ 0 };
+	int y{ 0 };
+	bool selected{ false };
+	bool xCentered{ false };
+	bool yCentered{ false };
 };
 
 class Screen
@@ -56,6 +66,8 @@ public:
 	void Render() const;
 
 	void Draw(Text text);
+
+	void Draw(Button button);
 
 	int GetHeight() const { return this->_height; }
 	int GetWidth() const { return this->_width; }

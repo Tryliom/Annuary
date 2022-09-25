@@ -80,13 +80,13 @@ void Screen::Render() const
 
 void Screen::Draw(Text text)
 {
-	if (text.XCentered)
+	if (text.xCentered)
 	{
-		text.X -= static_cast<int>(text.Str.length()) / 2;
+		text.x -= static_cast<int>(text.str.length()) / 2;
 	}
 
 	// If the text is out of the screen, don't draw it
-	if (_height <= text.Y || _width <= text.X)
+	if (_height <= text.y || _width <= text.x)
 	{
 		return;
 	}
@@ -94,35 +94,71 @@ void Screen::Draw(Text text)
 	// Colorize the text if a background or foreground color is specified
 	std::string preColor, postColor;
 
-	if (text.Background != Background::NONE || text.Foreground != Foreground::NONE)
+	if (text.background != Background::NONE || text.foreground != Foreground::NONE)
 	{
 		std::string colors;
 		preColor = "\033[";
 		postColor = "\033[0m";
 
-		if (text.Background != Background::NONE)
+		if (text.background != Background::NONE)
 		{
-			colors += std::to_string(static_cast<int>(text.Background));
+			colors += std::to_string(static_cast<int>(text.background));
 		}
-		if (text.Foreground != Foreground::NONE)
+		if (text.foreground != Foreground::NONE)
 		{
 			if (!colors.empty())
 			{
 				colors += ";";
 			}
-			colors += std::to_string(static_cast<int>(text.Foreground));
+			colors += std::to_string(static_cast<int>(text.foreground));
 		}
 
 		preColor += colors + "m";
 	}
 
-	for (int i = 0; i < static_cast<int>(text.Str.size()); i++)
+	for (int i = 0; i < static_cast<int>(text.str.size()); i++)
 	{
-		if (text.X + i >= _width)
+		if (text.x + i >= _width)
 		{
 			break;
 		}
 
-		this->_screen[text.Y][text.X + i] = preColor + text.Str[i] + postColor;
+		this->_screen[text.y][text.x + i] = preColor + text.str[i] + postColor;
 	}
+}
+
+void Screen::Draw(const Button button)
+{
+	Background background = Background::NONE;
+	Foreground foreground = Foreground::NONE;
+	int x = button.x;
+
+	if (button.xCentered)
+	{
+		x -= static_cast<int>(button.text.length()) / 2;
+	}
+
+	int y = button.y;
+
+	if (button.yCentered)
+	{
+		y -= 1;
+	}
+
+	std::string border;
+
+	for (int i = 0; i < static_cast<int>(button.text.length()) + 2; i++)
+	{
+		border += "#";
+	}
+
+	if (button.selected)
+	{
+		background = Background::BLUE;
+		foreground = Foreground::WHITE;
+	}
+
+	this->Draw(Text{ .str = border, .x = x, .y = y, .background = background, .foreground = foreground });
+	this->Draw(Text{ .str = "#" + button.text + "#", .x = x, .y = y + 1, .background = background, .foreground = foreground });
+	this->Draw(Text{ .str = border, .x = x, .y = y + 2, .background = background, .foreground = foreground });
 }
