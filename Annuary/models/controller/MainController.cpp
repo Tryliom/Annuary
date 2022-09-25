@@ -35,11 +35,22 @@ void MainController::update()
 
 		if (_currentContact.empty())
 		{
-			// Draw buttons
-			_screen.Draw(Button{ .text = "New contact", .x = _screen.GetWidth() / 3, .y = 5, .selected = _currentButton == 0, .xCentered = true });
+			_screen.Draw(Button{ .text = "New contact", .x = _screen.GetWidth() / 4, .y = 5, .selected = _currentButton == 0, .xCentered = true });
 			_screen.Draw(Button{ .text = "Search a contact", .x = _screen.GetWidth() / 2, .y = 5, .selected = _currentButton == 1, .xCentered = true });
-			_screen.Draw(Button{ .text = "Exit", .x = _screen.GetWidth() * 2 / 3, .y = 5, .selected = _currentButton == 2, .xCentered = true });
+			_screen.Draw(Button{ .text = "Exit", .x = _screen.GetWidth() * 3 / 4, .y = 5, .selected = _currentButton == 2, .xCentered = true });
 		}
+	}
+
+	if (_currentScreen == ScreenType::NEW_CONTACT)
+	{
+		// Create fields
+	}
+
+	if (_currentScreen == ScreenType::CONTACTS)
+	{
+		_screen.Draw(Text{ .str = "Contacts", .x = _screen.GetWidth() / 2, .y = 2, .xCentered = true });
+
+		// Display every contacts
 	}
 }
 
@@ -74,14 +85,41 @@ void MainController::onKeyPressed(const char key)
 							updateScreenType(ScreenType::SEARCH_CONTACT);
 							break;
 						case 2:
-							updateScreenType(ScreenType::EXIT);
-							break;
+							exit(0);
 					}
 					break;
 				default:
 					break;
 			}
 			break;
+		case ScreenType::CONTACTS:
+			switch (key)
+			{
+			case KEY_UP:
+				
+				break;
+			case KEY_DOWN:
+				
+				break;
+			case KEY_ENTER:
+				
+				break;
+			default:
+				break;
+			}
+			break;
+	}
+
+	if (key == KEY_ESC)
+	{
+		if (_currentScreen == ScreenType::MAIN)
+		{
+			exit(0);
+		}
+		else
+		{
+			updateScreenType(ScreenType::MAIN);
+		}
 	}
 }
 
