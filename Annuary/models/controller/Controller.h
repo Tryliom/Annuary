@@ -1,6 +1,9 @@
 #pragma once
 #include "../view/Screen.h"
 
+int constexpr FPS = 60;
+bool constexpr LIMIT_FPS = true;
+
 class Controller
 {
 protected:
@@ -26,6 +29,8 @@ private:
 	 */
 	void startRenderingThread();
 public:
+	int CurrentFPS{0};
+	int Tick{0};
 	/**
 	 * \brief Start the controller
 	 */
