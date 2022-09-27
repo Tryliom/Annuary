@@ -3,6 +3,12 @@
 #include <conio.h>
 #include <thread>
 
+void Controller::GoBack()
+{
+	this->_view = this->_views.top();
+	this->_views.pop();
+}
+
 void Controller::refresh()
 {
 	_screen.Reset();
@@ -53,4 +59,13 @@ void Controller::Start()
 			_canPressKey = true;
 		}
 	}
+}
+
+void Controller::ChangeView(View* view)
+{
+	if (this->_view != nullptr)
+	{
+		this->_views.push(this->_view);
+	}
+	this->_view = view;
 }

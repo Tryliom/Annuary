@@ -1,24 +1,37 @@
 #pragma once
+#include <stack>
+
 #include "../view/Screen.h"
+#include "../view/View.h"
 
 int constexpr FPS = 60;
 bool constexpr LIMIT_FPS = true;
+// Key codes
+constexpr auto KEY_UP = 72;
+constexpr auto KEY_DOWN = 80;
+constexpr auto KEY_LEFT = 75;
+constexpr auto KEY_RIGHT = 77;
+constexpr auto KEY_ENTER = 13;
+constexpr auto KEY_ESC = 27;
+constexpr auto KEY_BACKSPACE = 8;
 
 class Controller
 {
 protected:
 	Screen _screen;
 	bool _canPressKey{ true };
+	View* _view{ nullptr };
+	std::stack<View*> _views;
 
 	/**
 	 * \brief Used to draw things on the screen before rendering
 	 */
-	virtual void update() {}
+	virtual void update() = 0;
 	/**
 	 * \brief Called when a key is pressed
 	 * \param key The key pressed
 	 */
-	virtual void onKeyPressed(char key) {}
+	virtual void onKeyPressed(char key) = 0;
 private:
 	/**
 	 * \brief Refresh screen rendering
@@ -35,5 +48,14 @@ public:
 	 * \brief Start the controller
 	 */
 	void Start();
+	/**
+	 * \brief Switch to a new view
+	 * \param view The new view
+	 */
+	void ChangeView(View* view);
+	/**
+	 * \brief Go back to previous view
+	 */
+	void GoBack();
 };
 
