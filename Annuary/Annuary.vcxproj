@@ -129,14 +129,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Annuary.cpp" />
+    <ClCompile Include="models\view\views\MainView.cpp" />
     <ClCompile Include="models\controller\Controller.cpp" />
     <ClCompile Include="models\controller\MainController.cpp" />
     <ClCompile Include="models\view\Screen.cpp" />
+    <ClCompile Include="models\view\views\NewContactView.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="models\view\views\MainView.h" />
     <ClInclude Include="models\controller\Controller.h" />
     <ClInclude Include="models\controller\MainController.h" />
     <ClInclude Include="models\view\Screen.h" />
+    <ClInclude Include="models\view\View.h" />
+    <ClInclude Include="models\view\views\NewContactView.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
