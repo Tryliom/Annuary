@@ -26,6 +26,7 @@ void NewContactView::OnKeyPressed(Controller* controller, const char key)
 	{
 		if (_currentButton == _maxButtons - 1)
 		{
+			
 			dynamic_cast<MainController*>(controller)->AddContact(_name, _number);
 			dynamic_cast<MainController*>(controller)->GoBack();
 		}
@@ -55,7 +56,10 @@ void NewContactView::OnKeyPressed(Controller* controller, const char key)
 	{
 		if (_currentButton == 0)
 		{
-			_name += key;
+			if (key < 127 && key > 19)
+			{
+				_name += key;
+			}
 		}
 		else if (_currentButton == 1)
 		{
