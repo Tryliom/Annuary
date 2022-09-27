@@ -1,5 +1,8 @@
 #include "MainView.h"
+
+#include "ContactsView.h"
 #include "NewContactView.h"
+#include "SearchView.h"
 #include "../../controller/MainController.h"
 
 
@@ -32,11 +35,11 @@ void MainView::OnKeyPressed(Controller* controller, const char key)
 		}
 		else if (_currentButton == 1)
 		{
-			//controller->UpdateScreenType(ScreenType::SEARCH_CONTACT);
+			dynamic_cast<MainController*>(controller)->ChangeView(new SearchView());
 		}
 		else if (_currentButton == 2)
 		{
-			//controller->UpdateScreenType(ScreenType::CONTACTS);
+			dynamic_cast<MainController*>(controller)->ChangeView(new ContactsView());
 		}
 	}
 

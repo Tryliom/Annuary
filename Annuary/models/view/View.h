@@ -2,6 +2,8 @@
 #include "../controller/Controller.h"
 #include "../view/screen.h"
 
+class Controller;
+
 class View
 {
 public:

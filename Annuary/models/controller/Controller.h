@@ -4,6 +4,8 @@
 #include "../view/Screen.h"
 #include "../view/View.h"
 
+class View;
+
 int constexpr FPS = 60;
 bool constexpr LIMIT_FPS = true;
 // Key codes
