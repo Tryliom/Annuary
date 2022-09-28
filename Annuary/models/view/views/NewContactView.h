@@ -8,6 +8,7 @@ private:
 	int _maxButtons{ 3 };
 	std::string _name;
 	std::string _number;
+	std::string _errorMessage;
 
 public:
 	void Update(Controller* controller, Screen& screen) override;
