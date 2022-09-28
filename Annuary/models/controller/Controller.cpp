@@ -1,4 +1,5 @@
 #include "Controller.h"
+#include "../utilities/Utility.h"
 
 #include <conio.h>
 #include <thread>
@@ -42,7 +43,7 @@ void Controller::startRenderingThread()
 		{
 			while (true)
 			{
-				std::this_thread::sleep_for(std::chrono::seconds(1));
+				Utility::sleep(1000);
 				this->CurrentFPS = Tick;
 				Tick = 0;
 			}

@@ -1,5 +1,6 @@
 #include "MainController.h"
 #include "../view/views/MainView.h"
+#include "../utilities/Utility.h"
 
 #include <ranges>
 #include <thread>
@@ -11,6 +12,7 @@ MainController::MainController() : Controller()
 
 void MainController::update()
 {
+	// Update the view
 	if (this->_view != nullptr)
 	{
 		this->_view->Update(this, this->_screen);
@@ -22,18 +24,20 @@ void MainController::update()
 
 void MainController::onKeyPressed(const char key)
 {
+	// If the view is not null, call the view's onKeyPressed method
 	if (this->_view != nullptr)
 	{
 		this->_view->OnKeyPressed(this, key);
 	}
 
+	// If the key is Escape, exit the program or go back to the last view
 	if (key == KEY_ESC)
 	{
 		if (_views.empty())
 		{
 			// Close the program
 			this->_view = nullptr;
-			std::this_thread::sleep_for(std::chrono::milliseconds(300));
+			Utility::sleep(300);
 			exit(0);
 		}
 

@@ -137,6 +137,7 @@
     <ClCompile Include="models\view\views\NewContactView.cpp" />
     <ClCompile Include="models\view\views\SearchView.cpp" />
     <ClCompile Include="models\utilities\StringUtility.cpp" />
+    <ClCompile Include="models\utilities\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="models\view\views\ContactsView.h" />
@@ -148,6 +149,7 @@
     <ClInclude Include="models\view\views\NewContactView.h" />
     <ClInclude Include="models\view\views\SearchView.h" />
     <ClInclude Include="models\utilities\StringUtility.h" />
+    <ClInclude Include="models\utilities\Utility.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
