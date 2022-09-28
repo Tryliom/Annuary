@@ -16,7 +16,7 @@ void MainController::update()
 		this->_view->Update(this, this->_screen);
 	} else
 	{
-		_screen.Draw(Text{ .text = "Annuary has been exited", .x = _screen.GetWidth() / 2, .y = 3, .xCentered = true });
+		_screen.Draw(Text{ .Text = "Annuary has been exited", .X = _screen.GetWidth() / 2, .Y = 3, .XCentered = true });
 	}
 }
 

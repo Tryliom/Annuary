@@ -31,41 +31,43 @@ enum class Background
 
 struct Text
 {
-	std::string text{};
-	int x{ 0 };
-	int y{ 0 };
-	bool xCentered{ false };
-	Background background{ Background::NONE };
-	Foreground foreground{ Foreground::NONE };
+	std::string Str{};
+	int X{ 0 };
+	int Y{ 0 };
+	bool XCentered{ false };
+	Background Background{ Background::NONE };
+	Foreground Foreground{ Foreground::NONE };
 };
 
 struct Button
 {
-	std::string text{};
-	int x{ 0 };
-	int y{ 0 };
-	bool selected{ false };
-	bool xCentered{ false };
-	bool yCentered{ false };
+	std::string Str{};
+	int X{ 0 };
+	int Y{ 0 };
+	bool Selected{ false };
+	bool XCentered{ false };
+	bool YCentered{ false };
 };
 
 struct Field
 {
-	std::string text{};
-	int x{ 0 };
-	int y{ 0 };
-	bool selected{ false };
-	bool xCentered{ false };
-	bool yCentered{ false };
+	std::string Str{};
+	int X{ 0 };
+	int Y{ 0 };
+	bool Selected{ false };
+	bool XCentered{ false };
+	bool YCentered{ false };
 };
 
 class Screen
 {
 private:
 	std::vector<std::vector<std::string>> _screen;
+	// The cache of the previous screen
 	std::vector<std::vector<std::string>> _cache;
 	int _height;
 	int _width;
+	// The cursor position on the screen if it is displayed
 	int _cursorX;
 	int _cursorY;
 
@@ -76,10 +78,28 @@ public:
 	int GetHeight() const { return this->_height; }
 	int GetWidth() const { return this->_width; }
 
+	/**
+	 * \brief Clear the screen and prepare it for a new display
+	 */
 	void Reset();
+	/**
+	 * \brief Render the screen
+	 */
 	void Render() const;
+	/**
+	 * \brief Draw a text on the screen
+	 * \param text The text to draw
+	 */
 	void Draw(Text text);
-	void Draw(Button button);
+	/**
+	 * \brief Draw a button on the screen
+	 * \param button The button to draw
+	 */
+	void Draw(const Button& button);
+	/**
+	 * \brief Draw a field on the screen
+	 * \param field The field to draw
+	 */
 	void Draw(const Field& field);
 };
 

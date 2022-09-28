@@ -5,9 +5,21 @@
 #include <thread>
 #include <windows.h>
 
+// If true, a border will be drawn around the screen
 bool constexpr BORDER = true;
+// The character used to draw the columns for the border
 std::string const BORDER_COLUMN = "|";
+// The character used to draw the rows for the border
 std::string const BORDER_ROW = "=";
+
+void setCursorVisibility(const bool visibility)
+{
+	const HANDLE output = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_CURSOR_INFO cursorInfo;
+	GetConsoleCursorInfo(output, &cursorInfo);
+	cursorInfo.bVisible = visibility;
+	SetConsoleCursorInfo(output, &cursorInfo);
+}
 
 void Screen::setPos(const int x, const int y)
 {
@@ -37,10 +49,7 @@ void Screen::Reset()
 	this->_screen = {};
 
 	// Hide the cursor
-	CONSOLE_CURSOR_INFO cursorInfo;
-	GetConsoleCursorInfo(output, &cursorInfo);
-	cursorInfo.bVisible = false;
-	SetConsoleCursorInfo(output, &cursorInfo);
+	setCursorVisibility(false);
 
 	// Fill the screen with spaces and # if BORDER is true for borders
 	for (int h = 0; h < _height; h++)
@@ -82,125 +91,124 @@ void Screen::Render() const
 	// Display every lines of the screen
 	for (int h = 0; h < _height; h++)
 	{
-		int w = 0;
-		for (const auto& c : this->_screen[h])
+		for (int w = 0; w < _width; w++)
 		{
-			if (static_cast<int>(this->_cache.size()) != _height || static_cast<int>(this->_cache[h].size()) != _width || this->_cache[h][w] != c)
+			// If the cache has a different size than the screen, display the whole screen, otherwise only the differences between the cache and the screen
+			if (static_cast<int>(this->_cache.size()) != _height || static_cast<int>(this->_cache[h].size()) != _width || this->_cache[h][w] != _screen[h][w])
 			{
 				this->setPos(w, h);
-				std::cout << c;
+				std::cout << _screen[h][w];
 			}
-			w++;
 		}
 	}
 
 	if (_cursorX != -1 && _cursorY != -1)
 	{
 		// Show the cursor
-		const HANDLE output = GetStdHandle(STD_OUTPUT_HANDLE);
-		CONSOLE_CURSOR_INFO cursorInfo;
-		GetConsoleCursorInfo(output, &cursorInfo);
-		cursorInfo.bVisible = true;
-		SetConsoleCursorInfo(output, &cursorInfo);
+		setCursorVisibility(true);
 		this->setPos(_cursorX, _cursorY);
 	}
 }
 
 void Screen::Draw(Text text)
 {
-	if (text.xCentered)
+	if (text.XCentered)
 	{
-		text.x -= static_cast<int>(text.text.length()) / 2;
+		text.X -= static_cast<int>(text.Str.length()) / 2;
 	}
 
 	// If the text is out of the screen, don't draw it
-	if (_height <= text.y || _width <= text.x)
+	if (_height <= text.Y || _width <= text.X)
 	{
 		return;
 	}
 
-	// Colorize the text if a background or foreground color is specified
+	// Colorize the Str if a background or foreground color is specified
 	std::string preColor, postColor;
 
-	if (text.background != Background::NONE || text.foreground != Foreground::NONE)
+	if (text.Background != Background::NONE || text.Foreground != Foreground::NONE)
 	{
 		std::string colors;
 		preColor = "\033[";
 		postColor = "\033[0m";
 
-		if (text.background != Background::NONE)
+		if (text.Background != Background::NONE)
 		{
-			colors += std::to_string(static_cast<int>(text.background));
+			colors += std::to_string(static_cast<int>(text.Background));
 		}
-		if (text.foreground != Foreground::NONE)
+		if (text.Foreground != Foreground::NONE)
 		{
 			if (!colors.empty())
 			{
 				colors += ";";
 			}
-			colors += std::to_string(static_cast<int>(text.foreground));
+			colors += std::to_string(static_cast<int>(text.Foreground));
 		}
 
 		preColor += colors + "m";
 	}
 
-	for (int i = 0; i < static_cast<int>(text.text.size()); i++)
+	for (int i = 0; i < static_cast<int>(text.Str.size()); i++)
 	{
-		if (text.x + i >= _width)
+		// Break if the text is out of the screen
+		if (text.X + i >= _width)
 		{
 			break;
 		}
-
-		this->_screen[text.y][text.x + i] = preColor + text.text[i] + postColor;
+		// Draw the character at the specified position with the specified color if any
+		this->_screen[text.Y][text.X + i] = preColor + text.Str[i] + postColor;
 	}
 }
 
-void Screen::Draw(const Button button)
+void Screen::Draw(const Button& button)
 {
-	Background background = Background::NONE;
-	Foreground foreground = Foreground::NONE;
-	int x = button.x;
+	auto background = Background::NONE;
+	auto foreground = Foreground::NONE;
 
-	if (button.xCentered)
+	int x = button.X;
+	if (button.XCentered)
 	{
-		x -= static_cast<int>(button.text.length()) / 2;
+		x -= static_cast<int>(button.Str.length()) / 2;
 	}
 
-	int y = button.y;
-
-	if (button.yCentered)
+	int y = button.Y;
+	if (button.YCentered)
 	{
 		y -= 1;
 	}
 
+	// Draw a border around the button
 	std::string border;
-
-	for (int i = 0; i < static_cast<int>(button.text.length()) + 2; i++)
+	for (int i = 0; i < static_cast<int>(button.Str.length()) + 2; i++)
 	{
 		border += BORDER_ROW;
 	}
 
-	if (button.selected)
+	// If the button is selected, change the background and foreground color
+	if (button.Selected)
 	{
 		background = Background::CYAN;
 		foreground = Foreground::BLACK;
 	}
 
-	this->Draw(Text{ .text = border, .x = x, .y = y, .background = background, .foreground = foreground });
-	this->Draw(Text{ .text = BORDER_COLUMN + button.text + BORDER_COLUMN, .x = x, .y = y + 1, .background = background, .foreground = foreground });
-	this->Draw(Text{ .text = border, .x = x, .y = y + 2, .background = background, .foreground = foreground });
+	// Draw the border and the text
+	this->Draw(Text{ .Str = border, .X = x, .Y = y, .Background = background, .Foreground = foreground });
+	this->Draw(Text{ .Str = BORDER_COLUMN + button.Str + BORDER_COLUMN, .X = x, .Y = y + 1, .Background = background, .Foreground = foreground });
+	this->Draw(Text{ .Str = border, .X = x, .Y = y + 2, .Background = background, .Foreground = foreground });
 }
 
 void Screen::Draw(const Field& field)
 {
-	if (field.selected)
+	// Draw the field
+	if (field.Selected)
 	{
-		Draw(Text{ .text = field.text, .x = field.x, .y = field.y, .xCentered = field.xCentered, .background = Background::WHITE, .foreground = Foreground::BLACK });
-		_cursorX = field.x + field.text.length();
-		_cursorY = field.y;
+		Draw(Text{ .Str = field.Str, .X = field.X, .Y = field.Y, .XCentered = field.XCentered, .Background = Background::WHITE, .Foreground = Foreground::BLACK });
+		// If selected, draw the cursor at the end of the field
+		_cursorX = field.X + field.Str.length();
+		_cursorY = field.Y;
 	}
 	else
 	{
-		Draw(Text{ .text = field.text, .x = field.x, .y = field.y, .xCentered = field.xCentered });
+		Draw(Text{ .Str = field.Str, .X = field.X, .Y = field.Y, .XCentered = field.XCentered });
 	}
 }

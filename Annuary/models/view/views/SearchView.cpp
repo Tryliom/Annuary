@@ -6,14 +6,14 @@
 void SearchView::Update(Controller* controller, Screen& screen)
 {
 	// Draw the title of the view
-	screen.Draw(Text{ .text = "Search a contact", .x = screen.GetWidth() / 2, .y = 2, .xCentered = true });
+	screen.Draw(Text{ .Text = "Search a contact", .X = screen.GetWidth() / 2, .Y = 2, .XCentered = true });
 	// Draw the name field
-	screen.Draw(Text{ .text = "Name:", .x = screen.GetWidth() / 4, .y = 5 });
-	screen.Draw(Field{ .text = _name, .x = screen.GetWidth() / 4 + 6 + 3, .y = 5, .selected = true });
+	screen.Draw(Text{ .Text = "Name:", .X = screen.GetWidth() / 4, .Y = 5 });
+	screen.Draw(Field{ .Str = _name, .X = screen.GetWidth() / 4 + 6 + 3, .Y = 5, .Selected = true });
 	// Display the search results
-	screen.Draw(Text{ .text = _message, .x = screen.GetWidth() / 2, .y = 7, .xCentered = true });
+	screen.Draw(Text{ .Text = _message, .X = screen.GetWidth() / 2, .Y = 7, .XCentered = true });
 	// Display controls for the user
-	screen.Draw(Text{ .text = "Back: Esc", .x = screen.GetWidth() / 2, .y = screen.GetHeight() - 3, .xCentered = true });
+	screen.Draw(Text{ .Text = "Back: Esc", .X = screen.GetWidth() / 2, .Y = screen.GetHeight() - 3, .XCentered = true });
 }
 
 void SearchView::OnKeyPressed(Controller* controller, const char key)

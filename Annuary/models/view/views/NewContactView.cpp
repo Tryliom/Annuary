@@ -5,17 +5,17 @@
 void NewContactView::Update(Controller* controller, Screen& screen)
 {
 	// Draw name field
-	screen.Draw(Text{ .text = "Name:", .x = screen.GetWidth() / 4, .y = 5 });
-	screen.Draw(Field{ .text = _name, .x = screen.GetWidth() / 4 + 6 + 3, .y = 5, .selected = _currentButton == 0 });
+	screen.Draw(Text{ .Text = "Name:", .X = screen.GetWidth() / 4, .Y = 5 });
+	screen.Draw(Field{ .Str = _name, .X = screen.GetWidth() / 4 + 6 + 3, .Y = 5, .Selected = _currentButton == 0 });
 	// Draw phone number field
-	screen.Draw(Text{ .text = "Phone number:", .x = screen.GetWidth() / 4, .y = 7 });
-	screen.Draw(Field{ .text = _number, .x = screen.GetWidth() / 4 + 13 + 3, .y = 7, .selected = _currentButton == 1 });
+	screen.Draw(Text{ .Text = "Phone number:", .X = screen.GetWidth() / 4, .Y = 7 });
+	screen.Draw(Field{ .Str = _number, .X = screen.GetWidth() / 4 + 13 + 3, .Y = 7, .Selected = _currentButton == 1 });
 	// Draw save button
-	screen.Draw(Button{ .text = "Save", .x = screen.GetWidth() / 2, .y = 9, .selected = _currentButton == 2, .xCentered = true });
+	screen.Draw(Button{ .Str = "Save", .X = screen.GetWidth() / 2, .Y = 9, .Selected = _currentButton == 2, .XCentered = true });
 	// Draw the error message if there is any
-	screen.Draw(Text{ .text = _errorMessage, .x = screen.GetWidth() / 2, .y = screen.GetHeight() / 2, .xCentered = true, .background = Background::RED, .foreground = Foreground::WHITE });
+	screen.Draw(Text{ .Text = _errorMessage, .X = screen.GetWidth() / 2, .Y = screen.GetHeight() / 2, .XCentered = true, .Background = Background::RED, .Foreground = Foreground::WHITE });
 	// Display controls for the user
-	screen.Draw(Text{ .text = "Back: Esc | Arrows: move | Confirm: Enter", .x = screen.GetWidth() / 2, .y = screen.GetHeight() - 3, .xCentered = true });
+	screen.Draw(Text{ .Text = "Back: Esc | Arrows: move | Confirm: Enter", .X = screen.GetWidth() / 2, .Y = screen.GetHeight() - 3, .XCentered = true });
 }
 
 void NewContactView::OnKeyPressed(Controller* controller, const char key)
