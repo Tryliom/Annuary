@@ -114,4 +114,13 @@ void NewContactView::OnKeyPressed(Controller* controller, const char key)
 			}
 		}
 	}
+	// Correct the current button if it's out of bounds
+	if (_currentButton >= _maxButtons)
+	{
+		_currentButton = _maxButtons - 1;
+	}
+	if (_currentButton < 0)
+	{
+		_currentButton = 0;
+	}
 }
