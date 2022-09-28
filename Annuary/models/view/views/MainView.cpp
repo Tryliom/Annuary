@@ -9,13 +9,13 @@
 void MainView::Update(Controller* controller, Screen& screen)
 {
 	// Draw the title of the view
-	screen.Draw(Text{ .str = "Directory", .x = screen.GetWidth() / 2, .y = 2, .xCentered = true });
+	screen.Draw(Text{ .text = "Directory", .x = screen.GetWidth() / 2, .y = 2, .xCentered = true });
 	// Draw the menu buttons
 	screen.Draw(Button{ .text = "New contact", .x = screen.GetWidth() / 4, .y = 5, .selected = _currentButton == 0, .xCentered = true });
 	screen.Draw(Button{ .text = "Search a contact", .x = screen.GetWidth() / 2, .y = 5, .selected = _currentButton == 1, .xCentered = true });
 	screen.Draw(Button{ .text = "Display contacts", .x = screen.GetWidth() * 3 / 4, .y = 5, .selected = _currentButton == 2, .xCentered = true });
 	// Display controls for the user
-	screen.Draw(Text{ .str = "Exit: Esc | Arrows: move | Confirm: Enter", .x = screen.GetWidth() / 2, .y = screen.GetHeight() - 3, .xCentered = true });
+	screen.Draw(Text{ .text = "Exit: Esc | Arrows: move | Confirm: Enter", .x = screen.GetWidth() / 2, .y = screen.GetHeight() - 3, .xCentered = true });
 }
 
 void MainView::OnKeyPressed(Controller* controller, const char key)

@@ -6,14 +6,14 @@
 void SearchView::Update(Controller* controller, Screen& screen)
 {
 	// Draw the title of the view
-	screen.Draw(Text{ .str = "Search a contact", .x = screen.GetWidth() / 2, .y = 2, .xCentered = true });
+	screen.Draw(Text{ .text = "Search a contact", .x = screen.GetWidth() / 2, .y = 2, .xCentered = true });
 	// Draw the name field
-	screen.Draw(Text{ .str = "Name:", .x = screen.GetWidth() / 4, .y = 5 });
+	screen.Draw(Text{ .text = "Name:", .x = screen.GetWidth() / 4, .y = 5 });
 	screen.Draw(Field{ .text = _name, .x = screen.GetWidth() / 4 + 6 + 3, .y = 5, .selected = true });
 	// Display the search results
-	screen.Draw(Text{ .str = _message, .x = screen.GetWidth() / 2, .y = 7, .xCentered = true });
+	screen.Draw(Text{ .text = _message, .x = screen.GetWidth() / 2, .y = 7, .xCentered = true });
 	// Display controls for the user
-	screen.Draw(Text{ .str = "Back: Esc", .x = screen.GetWidth() / 2, .y = screen.GetHeight() - 3, .xCentered = true });
+	screen.Draw(Text{ .text = "Back: Esc", .x = screen.GetWidth() / 2, .y = screen.GetHeight() - 3, .xCentered = true });
 }
 
 void SearchView::OnKeyPressed(Controller* controller, const char key)

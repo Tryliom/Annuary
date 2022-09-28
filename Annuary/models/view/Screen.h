@@ -31,7 +31,7 @@ enum class Background
 
 struct Text
 {
-	std::string str{};
+	std::string text{};
 	int x{ 0 };
 	int y{ 0 };
 	bool xCentered{ false };

@@ -110,7 +110,7 @@ void Screen::Draw(Text text)
 {
 	if (text.xCentered)
 	{
-		text.x -= static_cast<int>(text.str.length()) / 2;
+		text.x -= static_cast<int>(text.text.length()) / 2;
 	}
 
 	// If the text is out of the screen, don't draw it
@@ -144,14 +144,14 @@ void Screen::Draw(Text text)
 		preColor += colors + "m";
 	}
 
-	for (int i = 0; i < static_cast<int>(text.str.size()); i++)
+	for (int i = 0; i < static_cast<int>(text.text.size()); i++)
 	{
 		if (text.x + i >= _width)
 		{
 			break;
 		}
 
-		this->_screen[text.y][text.x + i] = preColor + text.str[i] + postColor;
+		this->_screen[text.y][text.x + i] = preColor + text.text[i] + postColor;
 	}
 }
 
@@ -186,21 +186,21 @@ void Screen::Draw(const Button button)
 		foreground = Foreground::BLACK;
 	}
 
-	this->Draw(Text{ .str = border, .x = x, .y = y, .background = background, .foreground = foreground });
-	this->Draw(Text{ .str = BORDER_COLUMN + button.text + BORDER_COLUMN, .x = x, .y = y + 1, .background = background, .foreground = foreground });
-	this->Draw(Text{ .str = border, .x = x, .y = y + 2, .background = background, .foreground = foreground });
+	this->Draw(Text{ .text = border, .x = x, .y = y, .background = background, .foreground = foreground });
+	this->Draw(Text{ .text = BORDER_COLUMN + button.text + BORDER_COLUMN, .x = x, .y = y + 1, .background = background, .foreground = foreground });
+	this->Draw(Text{ .text = border, .x = x, .y = y + 2, .background = background, .foreground = foreground });
 }
 
 void Screen::Draw(const Field& field)
 {
 	if (field.selected)
 	{
-		Draw(Text{ .str = field.text, .x = field.x, .y = field.y, .xCentered = field.xCentered, .background = Background::WHITE, .foreground = Foreground::BLACK });
+		Draw(Text{ .text = field.text, .x = field.x, .y = field.y, .xCentered = field.xCentered, .background = Background::WHITE, .foreground = Foreground::BLACK });
 		_cursorX = field.x + field.text.length();
 		_cursorY = field.y;
 	}
 	else
 	{
-		Draw(Text{ .str = field.text, .x = field.x, .y = field.y, .xCentered = field.xCentered });
+		Draw(Text{ .text = field.text, .x = field.x, .y = field.y, .xCentered = field.xCentered });
 	}
 }
