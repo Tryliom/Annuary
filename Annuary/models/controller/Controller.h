@@ -6,9 +6,11 @@
 
 class View;
 
+#pragma region constants
+
 int constexpr FPS = 60;
 bool constexpr LIMIT_FPS = true;
-// Key codes
+// Useful key codes
 constexpr auto KEY_UP = 72;
 constexpr auto KEY_DOWN = 80;
 constexpr auto KEY_LEFT = 75;
@@ -17,12 +19,16 @@ constexpr auto KEY_ENTER = 13;
 constexpr auto KEY_ESC = 27;
 constexpr auto KEY_BACKSPACE = 8;
 
+#pragma endregion
+
 class Controller
 {
 protected:
 	Screen _screen;
 	bool _canPressKey{ true };
+	// The current view
 	View* _view{ nullptr };
+	// The previous views
 	std::stack<View*> _views;
 
 	/**

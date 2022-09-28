@@ -18,23 +18,25 @@ void Controller::refresh()
 
 void Controller::startRenderingThread()
 {
-	std::thread t([this]()
+	std::thread renderThread([this]()
 		{
-			auto next_frame = std::chrono::steady_clock::now();
+			auto nextFrame = std::chrono::steady_clock::now();
 
 			while (true)
 			{
-				next_frame += std::chrono::milliseconds(1000 / FPS);
+				nextFrame += std::chrono::milliseconds(1000 / FPS);
 
 				this->refresh();
 				Tick++;
+
 				if (LIMIT_FPS)
 				{
-					std::this_thread::sleep_until(next_frame);
+					std::this_thread::sleep_until(nextFrame);
 				}
 			}
-		});
-	t.detach();
+		}
+	);
+	renderThread.detach();
 
 	std::thread fpsThread([this]()
 		{
@@ -44,13 +46,16 @@ void Controller::startRenderingThread()
 				this->CurrentFPS = Tick;
 				Tick = 0;
 			}
-		});
+		}
+	);
 	fpsThread.detach();
 }
 
 void Controller::Start()
 {
 	startRenderingThread();
+
+	// Get every key pressed
 	while (const char key = static_cast<char>(_getch())) 
 	{
 		if (_canPressKey) {
@@ -65,7 +70,10 @@ void Controller::ChangeView(View* view)
 {
 	if (this->_view != nullptr)
 	{
+		// Push the current view to the stack
 		this->_views.push(this->_view);
 	}
+
+	// Set the new view as the current view
 	this->_view = view;
 }
