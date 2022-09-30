@@ -34,6 +34,8 @@ void NewContactView::OnKeyPressed(Controller* controller, const char key)
 	}
 	else if (key == KEY_ENTER)
 	{
+		const auto mainController = dynamic_cast<MainController*>(controller);
+
 		// Save the new contact if on save, otherwise switch to next button
 		if (_currentButton == _maxButtons - 1)
 		{
@@ -50,10 +52,13 @@ void NewContactView::OnKeyPressed(Controller* controller, const char key)
 			{
 				_errorMessage = "The phone number is empty !";
 			}
+			else if (mainController->GetContacts().contains(_name))
+			{
+				_errorMessage = "A contact with this name already exists !";
+			}
 			else
 			{
 				// Add the new contact to the contacts
-				const auto mainController = dynamic_cast<MainController*>(controller);
 				mainController->AddContact(_name, _number);
 				mainController->GoBack();
 			}
