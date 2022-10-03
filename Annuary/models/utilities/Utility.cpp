@@ -1,6 +1,7 @@
 #include "Utility.h"
 
 #include <chrono>
+#include <thread>
 
 namespace Utility
 {
